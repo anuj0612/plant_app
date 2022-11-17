@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:plant_app/screens/home_activity.dart';
 import 'package:plant_app/screens/onboarding/onboarding_activityy.dart';
 
 void main() {

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:plant_app/res/colors.dart';
 import 'package:plant_app/res/string.dart';
+import 'package:plant_app/root_activity.dart';
 import 'package:plant_app/screens/auth/login_activity.dart';
 
 import '../../widgets/onboarding_box.dart';
@@ -95,7 +96,7 @@ class _OnBoardingActivityState extends State<OnBoardingActivity> {
                               curve: Curves.easeIn);
                         }
                       } else {
-                        Get.to(() => const LoginActivity());
+                        Get.offAll(() => const RootActivity());
                       }
                     });
                   },
