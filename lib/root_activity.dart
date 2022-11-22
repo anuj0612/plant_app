@@ -1,6 +1,7 @@
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:plant_app/models/plants.dart';
 import 'package:plant_app/res/colors.dart';
 import 'package:plant_app/screens/cart_activity.dart';
 import 'package:plant_app/screens/favorite_activity.dart';
@@ -17,12 +18,19 @@ class RootActivity extends StatefulWidget {
 
 class _RootActivityState extends State<RootActivity> {
   int currentIndex = 0;
-  List<Widget> pages = [
-    const HomeActivity(),
-    const FavoriteActivity(),
-    const CartActivity(),
-    const ProfileActivity()
-  ];
+  List<Plant> favorites = [];
+  List<Plant> myCart = [];
+
+  List<Widget> _widgetOptions() {
+    return [
+      const HomeActivity(),
+      FavoriteActivity(
+        favoritedPlants: favorites,
+      ),
+      CartActivity(addedToCartPlants: myCart),
+      const ProfileActivity()
+    ];
+  }
 
   List<IconData> iconList = [
     Icons.home,
@@ -57,14 +65,17 @@ class _RootActivityState extends State<RootActivity> {
       ),
       body: IndexedStack(
         index: currentIndex,
-        children: pages,
+        children: _widgetOptions(),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Get.to(() => const ScanActivity(), transition: Transition.downToUp);
         },
         backgroundColor: primaryColor,
-        child: Image.asset('assets/code-scan-two.png',height: 30.0,),
+        child: Image.asset(
+          'assets/code-scan-two.png',
+          height: 30.0,
+        ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: AnimatedBottomNavigationBar(
@@ -75,12 +86,16 @@ class _RootActivityState extends State<RootActivity> {
         activeIndex: currentIndex,
         gapLocation: GapLocation.center,
         notchSmoothness: NotchSmoothness.softEdge,
-        onTap: (index){
+        onTap: (index) {
           setState(() {
             currentIndex = index;
+            final List<Plant> favoritedPlants = Plant.getFavoritedPlants();
+            final List<Plant> addToCartPlants = Plant.addedToCartPlants();
+
+            favorites = favoritedPlants;
+            myCart = addToCartPlants.toSet().toList();
           });
         },
-
       ),
     );
   }
